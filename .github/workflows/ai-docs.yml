@@ -1,0 +1,32 @@
+name: AI Documentation Automation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [closed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'init or update'
+        required: true
+        default: update
+        type: choice
+        options: [init, update]
+
+jobs:
+  trigger-docs:
+    if: github.event.pull_request.merged == true || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run AI documentation pipeline
+        env:
+          OWN_DOCS_WEBHOOK_URL: ${{ secrets.OWN_DOCS_WEBHOOK_URL }}
+          OWN_DOCS_WEBHOOK_SECRET: ${{ secrets.OWN_DOCS_WEBHOOK_SECRET }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          DOC_MODE: ${{ github.event.inputs.mode || '' }}
+        run: node ai-docs.js

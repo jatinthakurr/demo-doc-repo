@@ -1,0 +1,14 @@
+{
+  "name": "task-manager-api",
+  "version": "1.0.0",
+  "description": "Demo REST API used to test the OWN Documentation Agent pipeline",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -59,6 +59,20 @@ function removeTask(id) {
   return tasks.delete(Number(id));
 }
 
+function updateTask(id, updates) {
+  const task = tasks.get(Number(id));
+  if (!task) return null;
+
+  if (updates.title !== undefined) task.title = updates.title;
+  if (updates.description !== undefined) task.description = updates.description;
+  if (updates.priority !== undefined) task.priority = updates.priority;
+  if (updates.dueDate !== undefined) task.dueDate = updates.dueDate;
+  if (updates.tags !== undefined) task.tags = updates.tags;
+
+  return task;
+}
+
+
 module.exports = {
   listTasks,
   getTask,
@@ -67,4 +81,5 @@ module.exports = {
   assignTask,
   searchTasks,
   removeTask,
+  updateTask,
 };

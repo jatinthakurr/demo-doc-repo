@@ -32,6 +32,16 @@ router.post("/", (req, res) => {
   res.status(201).json(task);
 });
 
+// PUT /tasks/:id
+router.put("/:id", (req, res) => {
+  const errors = validateTaskInput(req.body);
+  if (errors.length) return res.status(400).json({ errors });
+
+  const task = taskService.updateTask(req.params.id, req.body);
+  if (!task) return res.status(404).json({ error: "Task not found" });
+  res.json(task);
+});
+
 // PATCH /tasks/:id/status
 router.patch("/:id/status", (req, res) => {
   if (!validateStatus(req.body?.status)) {

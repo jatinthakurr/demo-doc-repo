@@ -20,10 +20,12 @@ Because the surface area is intentionally small, TaskFlow is easy to embed: a Sl
 
 ## Endpoints
 - `GET /health`
-- `GET /tasks?status=todo|in_progress|done`
+- `GET /tasks?status=todo|in_progress|done&assignee=alice`
+- `GET /tasks/search?q=keyword` — matches title, description, and tags
 - `GET /tasks/:id`
-- `POST /tasks` — body: `{ title, description?, priority? }`
+- `POST /tasks` — body: `{ title, description?, priority?, assignee?, dueDate?, tags? }`
 - `PATCH /tasks/:id/status` — body: `{ status }`
+- `PATCH /tasks/:id/assignee` — body: `{ assignee }`
 - `DELETE /tasks/:id`
 
 ## Run locally

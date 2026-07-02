@@ -4,9 +4,16 @@ const { validateTaskInput, validateStatus } = require("../utils/validate");
 
 const router = express.Router();
 
-// GET /tasks?status=todo
+// GET /tasks?status=todo&assignee=alice
 router.get("/", (req, res) => {
-  res.json(taskService.listTasks({ status: req.query.status }));
+  res.json(taskService.listTasks({ status: req.query.status, assignee: req.query.assignee }));
+});
+
+// GET /tasks/search?q=keyword
+router.get("/search", (req, res) => {
+  const q = req.query.q;
+  if (!q) return res.status(400).json({ error: "q query parameter is required" });
+  res.json(taskService.searchTasks(q));
 });
 
 // GET /tasks/:id
@@ -32,6 +39,13 @@ router.patch("/:id/status", (req, res) => {
   }
 
   const task = taskService.updateTaskStatus(req.params.id, req.body.status);
+  if (!task) return res.status(404).json({ error: "Task not found" });
+  res.json(task);
+});
+
+// PATCH /tasks/:id/assignee
+router.patch("/:id/assignee", (req, res) => {
+  const task = taskService.assignTask(req.params.id, req.body?.assignee ?? null);
   if (!task) return res.status(404).json({ error: "Task not found" });
   res.json(task);
 });
